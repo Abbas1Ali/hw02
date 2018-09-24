@@ -1,7 +1,11 @@
+#include <iostream>
+#include <fstream>
+#include <stdlib.h>
+#include <time.h>
 #include <cstdlib>
 #include <ctime>
 
-#include <iostream>
+using namespace std;
 
 //Structure to keep track of various locations
 struct Point
@@ -42,6 +46,7 @@ struct Player
 
 typedef const int cint;         //Google typedef to see what this means
 typedef const Point cPoint;
+char* Wall;
 
 char* create_dungeon(int, int, Point&, Point&);      //Creates the dungeon
 void traversal(char*, Point&, cPoint&, cint, cint); //Used for moving inside dungeon
@@ -58,74 +63,585 @@ int main ()
   int width = 0;
   int height = 0;
 
-  /*
-   *   ADD YOUR CODE HERE IF REQUIRED
-   */
+  cout<<"Enter the width and size of the dungeon you want to play in: " <<endl;
+  cout<<"Please try to keep it bigger than a 8 x 8 grid for best experience." <<endl;
+  cout<<endl;
+
+  cout <<"Height :" ;
+  cin >> height ;
+  cout<<endl;
+  cout <<"Width :" ;
+  cin >> width ;
 
   Point start_point(0,0);
   Point exit_point(0,0);
 
-  char* dungeon = nullptr;
+  char* dungeon = NULL;
 
+  int n = width*height;
+  Wall = new char[n];
+  for(int i = 0; i<(n); i++)
+  {
+      Wall[i] = ' ';
+  }
   dungeon = create_dungeon(width, height, start_point, exit_point);
+
 
   traversal(dungeon, start_point, exit_point, width, height);
 
-  /*
-   *   ADD YOUR CODE HERE IF REQUIRED
-   */
+ delete dungeon ;
 
   return 0;
 }
 
 void trap_statements()
 {
-  /*
-   *   ADD YOUR CODE HERE AS REQUIRED
-   */
+  int i = rand()%3 ;
+  if(i = 0)
+  {
+      cout<<"An arrow flew out of a nearby wall and hit you in your posterior. That will leave a scar !" <<endl;
+  }
+  if(i = 1)
+  {
+      cout<<"You stepped into a bear trap and got yourself injured." <<endl;
+  }
+  if(i = 2)
+  {
+      cout<<"You walked into some spikes that sprung out of the floor." <<endl;
+  }
 }
 
 void food_statements()
 {
-  /*
-   *   ADD YOUR CODE HERE AS REQUIRED
-   */
+
+  int j = rand()%3 ;
+  if(j = 0)
+  {
+      cout<<"It is a bread roll in this dungeon? Maybe there is a secret bakery around here." <<endl;
+  }
+  if(j = 1)
+  {
+      cout<<"You looked at the food and it was a well cooked chicken...well atleast it looked like one." <<endl;
+  }
+  if(j = 2)
+  {
+      cout<<"It is a rat as big as a rabbit. It will go down well with a bit of wasp juice." <<endl;
+  }
 }
 
 void hit_statements()
 {
-  /*
-   *   ADD YOUR CODE HERE AS REQUIRED
-   */
+  int k = rand()%3 ;
+  if(k = 0)
+  {
+      cout<<"You made an excellent jab that knocked the lights out of yout enemy." <<endl;
+      cout<<"You killed one enemy"<<endl;
+  }
+  if(k = 1)
+  {
+      cout<<"You roundhouse kick sent your enemy flying right into a gutter." <<endl;
+      cout<<"You killed one enemy"<<endl;
+  }
+  if(k = 2)
+  {
+      cout<<"Your speed is unmatched and delivered a Stone Cold Stunner." <<endl;
+      cout<<"You killed one enemy"<<endl;
+  }
 }
 
 void get_hit_statements()
 {
-  /*
-   *   ADD YOUR CODE HERE AS REQUIRED
-   */
+  int l = rand()%3 ;
+  if(l = 0)
+  {
+      cout<<"The enemy avoided your attack and gave you a nasty scratch." <<endl;
+      cout<<"You lost one health"<<endl;
+  }
+  if(l = 1)
+  {
+      cout<<"The enemy threw a rock that hit you on the temple and shook you bad." <<endl;
+      cout<<"You lost one health"<<endl;
+  }
+  if(l = 2)
+  {
+      cout<<"You were not prepared for a sudden lunging attack that hit you hard." <<endl;
+      cout<<"You lost one health"<<endl;
+  }
 }
 
 void traversal(char* dungeon, Point& start_point, cPoint& exit_point,
 	       cint width, cint height)
 {
-  /*
-   *   ADD YOUR CODE HERE AS REQUIRED. DEFINE NEW FUNCTIONS IF IT GETS LONG.
-   */
+
+    Player PlayerObject ;
+   int n = width* height;
+   for(int i=0; i<n; i++){
+   int y = rand() % 100;
+   if(y < 20)
+   {
+    int v = rand() % 100 ;
+
+    if(v > 0 && v < 15)
+   {
+           if(Wall[i] != 'w'&& Wall[i]!='P' &&Wall[i]!= 'X')
+           {
+               Wall[i] = 'E' ;
+           }
+       //}
+   };
+
+   if(v > 15 && v < 30)
+   {
+           if(Wall[i] != 'w'&& Wall[i]!='P' &&Wall[i]!= 'X')
+           {
+               if (Wall[i] != 'E')
+               {
+
+                   Wall[i] = 'H';
+               }
+           }
+       //}
+   }
+
+   if(v > 30 && v < 45)
+   {
+           if(Wall[i] != 'w'&& Wall[i]!='P' &&Wall[i]!= 'X')
+           {
+               if (Wall[i] != 'E')
+               {
+                   if (Wall[i] != 'H')
+                   {
+                       Wall[i] = 'T' ;
+                   }
+               }
+           }
+       //}
+
+   }
+
+   if(v > 45 && v < 60)
+   {
+           if(Wall[i] != 'w'&& Wall[i]!='P' &&Wall[i]!= 'X')
+           {
+               if (Wall[i] != 'E')
+               {
+                   if (Wall[i] != 'H')
+                   {
+                       if (Wall[i] != 'T')
+                       {
+                           Wall[i] = 'F' ;
+
+
+                       }
+                   }
+               }
+           }
+       //}
+   }
+   if(v > 60)
+   {
+           if(Wall[i] != 'w'&& Wall[i]!='P' &&Wall[i]!= 'X')
+           {
+               if (Wall[i] != 'E')
+               {
+                   if (Wall[i] != 'H')
+                   {
+                       if (Wall[i] != 'T')
+                       {
+                           if (Wall[i] != 'F')
+                           {
+                               Wall[i] = 'w' ;
+                           }
+
+
+                       }
+                   }
+               }
+           //}
+   }
+
+   }
+   }
+   else{
+        Wall[i] == ' ';
+
+   }
+
+   }
+
+
+for (int i = 0; i < n ; i++)
+{
+
+    cout<<endl;
+   for(int j=0; j<width*height; j++){
+    if(j%width == 0){
+        cout<<endl;
+    }
+    cout<<Wall[j];
+   }
+cout<<endl;
+cout<<endl;
+
+cout<<"After being captured by a raid of some robbers on your caravan,"<<endl;
+cout<<"you find yourself alone in a dark dungeon.With nothing but your" <<endl;
+cout<<"wits, you choose to take a step..."<<endl;
+cout<<endl;
+cout<< "In which direction do you want to move? (U,D,L,R; Press X if you want to give up and die.)" << endl;
+char a;
+cin >> a;
+int tempNewPosition = 0;
+int tempNewIndex = 0;
+if (a == 'x')
+    {
+        cout<< "You Died!!" ;
+        break;
+    }
+    if (a == 'R')
+    {
+       // food = food - 1;
+
+      // cout<<"You have " << PlayerObject.food << " food left" <<endl;
+        int index = (start_point.y * width) + start_point.x;
+
+        Wall[index] = ' ';
+        int tempPosition = start_point.x + 1;
+        tempNewPosition = (start_point.y * width) + tempPosition;
+        if(Wall[tempNewPosition] != 'w')
+            {
+                 if(Wall[tempNewPosition] == 'H')
+                 {
+                        PlayerObject.gainHealth();
+                 }
+        if(Wall[tempNewPosition] == 'T')
+            {
+            PlayerObject.loseHealth();
+            trap_statements();
+        }
+        if(Wall[tempNewPosition] == 'F')
+        {
+            int a = (rand() % 5) + 4;
+             PlayerObject.food += a ;
+  cout<<"You found some food that will last you "<< PlayerObject.food <<" more days" << endl;
+
+            food_statements();
+
+        }
+        if(Wall[tempNewPosition] =='E')
+        {
+            int z = (rand()%3) + 2;
+            cout<<"You will fight "<< z <<"enemies" <<endl;
+            combat(PlayerObject,z);
+        }
+
+        if(Wall[tempNewPosition] == 'X')
+        {
+            cout<< "You Win";
+            break;
+        }
+
+
+                start_point.x = start_point.x+1;
+                int newIndex = (start_point.y * width) + start_point.x;
+                Wall[newIndex] = 'P';
+                }
+
+                else{
+                    cout<<"There is nothing there "<<endl;
+                    Wall[index] = 'P';
+
+                }
+              PlayerObject.food-=1;
+              cout<<"You have food for" << PlayerObject.food << " more turns" <<endl;
+
+    }
+    if (a == 'L')
+    {
+
+//food = food - 1;
+//cout<<"You have "<< PlayerObject.food << " food left" <<endl;
+         int index = (start_point.y * width) + start_point.x;
+        Wall[index] = ' ';
+        int newPosition = start_point.x-1;
+         tempNewPosition = (start_point.y * width) + newPosition;
+        if(Wall[tempNewPosition] != 'w'){
+                 if(Wall[tempNewPosition] == 'H')
+        {
+            PlayerObject.gainHealth();
+        }
+        if(Wall[tempNewPosition] == 'T')
+        {
+            PlayerObject.loseHealth();
+            trap_statements();
+        }
+        if(Wall[tempNewPosition] == 'F')
+        {
+            int a = (rand() % 5) + 4;
+            PlayerObject.food +=  a ;
+            cout<<"You found some food that will last you "<< PlayerObject.food <<" more days" << endl;
+
+            food_statements();
+
+        }
+        if(Wall[tempNewPosition] == 'E')
+        {
+            int z = (rand()%3) + 2;
+            cout<<"You will fight "<< z <<"enemies" <<endl;
+            combat(PlayerObject,z);
+        }
+        if(Wall[tempNewPosition] == 'X')
+        {
+            cout<< "You Win";
+            break;
+        }
+
+         start_point.x = start_point.x-1;
+        int newIndex = (start_point.y * width) + start_point.x;
+        Wall[newIndex] = 'P';
+        }
+
+        else{
+                cout<<"There is nothing there." <<endl;
+            Wall[index] = 'P';
+        }
+        PlayerObject.food-=1;
+        cout<<"You have food for" << PlayerObject.food << " more turns" <<endl;
+    }
+    if (a == 'U')
+    {
+
+       //cout<<"You have "<< PlayerObject.food << " food left" <<endl;
+        int index = (start_point.y * width) + start_point.x;
+        Wall[index] = ' ';
+
+        int tempPosition = start_point.y-1;
+         tempNewIndex = (tempPosition * width) + start_point.x;
+        if(Wall[tempNewIndex] != 'w')
+        {
+             if(Wall[tempNewIndex] == 'H')
+        {
+            PlayerObject.gainHealth();
+        }
+        if(Wall[tempNewIndex] == 'T')
+        {
+            PlayerObject.loseHealth();
+            trap_statements();
+        }
+        if(Wall[tempNewIndex] == 'F')
+        {
+            int a = (rand() % 5) + 4;
+           PlayerObject.food += a ;
+           cout<<"You found some food that will last you "<< PlayerObject.food <<" more turns" << endl;
+
+            food_statements();
+
+        }
+        if(Wall[tempNewIndex] == 'E')
+        {
+            int z = (rand()%3) + 2;
+            cout<<"You will fight "<< z <<"enemies" <<endl;
+            combat(PlayerObject,z);
+        }
+        if(Wall[tempNewIndex] == 'X')
+        {
+            cout<< "You Win";
+            break;
+        }
+
+
+        start_point.y = start_point.y-1;
+        int newIndex = (start_point.y * width) + start_point.x;
+        Wall[newIndex] = 'P';
+        }
+
+        else{
+                cout<<"There is nothing there."<<endl;
+            Wall[index] = 'P';
+           // PlayerObject.loseHealth();
+        }
+      PlayerObject.food-=1;
+      cout<<"You have food for " << PlayerObject.food << " more turns" <<endl;
+    }
+    if (a == 'D')
+    {
+
+      // cout<<"You have "<< PlayerObject.food << " food left" <<endl;
+        int index = (start_point.y * width) + start_point.x;
+        Wall[index] = ' ';
+        int  tempPosition = start_point.y+1;
+         tempNewIndex = (tempPosition * width) + start_point.x;
+        if(Wall[tempNewIndex] != 'w'){
+                 if(Wall[tempNewIndex] == 'H')
+        {
+            PlayerObject.gainHealth();
+        }
+        if(Wall[tempNewIndex] == 'T')
+        {
+            PlayerObject.loseHealth();
+            trap_statements();
+        }
+        if(Wall[tempNewIndex] == 'F')
+        {
+            int a = (rand() % 5) + 4;
+            PlayerObject.food +=  a ;
+            cout<<"You found some food that will last you "<< PlayerObject.food <<" more turns" << endl;
+
+            food_statements();
+
+        }
+        if(Wall[tempNewIndex] == 'E')
+        {
+            int z = (rand()%3) + 2;
+            cout<<"You will fight "<< z <<"enemies" <<endl;
+            combat(PlayerObject,z);
+        }
+        if(Wall[tempNewIndex] == 'X')
+        {
+            cout<< "You Win";
+            break;
+        }
+
+
+        start_point.y = start_point.y+1;
+        int newIndex = (start_point.y * width) + start_point.x;
+        Wall[newIndex] = 'P';
+        }
+
+        else{
+                cout<<"There is nothing there."<<endl;
+        Wall[index] = 'P';
+        //PlayerObject.loseHealth() ;
+        }
+      PlayerObject.food-=1;
+      cout<<"You have food for " << PlayerObject.food << " more turns" <<endl;
+
+    }
+
+
+
+    if(PlayerObject.health == 0 )
+    {
+        cout << "You Died because food is finished !!" ;
+    }
+    if(PlayerObject.food == 0)
+    {
+        cout<< "You Died because food is finished !!" ;
+    }
+
 
 }
 
+
+}
 void combat(Player& player, int enemies)
 {
-  /*
-   *   ADD YOUR CODE HERE AS REQUIRED
-   */
+while(enemies > 0)
+{int c = rand() % 100;
+  if(c <= 30)
+  {
+      hit_statements();
+      enemies = enemies - 1;
+  }
+  if(c <= 10)
+  {
+      get_hit_statements();
+      player.loseHealth();
+  }
+}
 }
 
-char* create_dungeon(int width, int height,
-		     Point& ref_startPoint, Point& ref_exitPoint)
+char* create_dungeon(int width, int height, Point& ref_startPoint, Point& ref_exitPoint)
 {
-  /*
-   *   ADD YOUR CODE HERE AS REQUIRED. DEFINE NEW FUNCTIONS IF IT GETS LONG.
-   */
+
+    int n = width*height;
+
+    for(int i=0; i<width; i++)
+   {
+     Wall[i] = 'w';
+
+   }
+
+   cout<<endl;
+    int counter = 0;
+   for(int i=width; i<n-width; i++ ){
+     if(i%width != 0 && i%width != width-1){
+     }
+     else{
+       Wall[i] = 'w';
+       counter ++;
+         if(counter == 2){
+       counter=0;
+     }
+     }
+
+   }
+   for(int i=0; i<width; i++){
+     Wall[n-width+i]= 'w';
+    // cout<<Wall[n-width+i];
+   }
+     bool isPlaced = false;
+    cout<<endl;
+
+    int randomNumber = rand() % (height-2);
+    while (true)
+    {
+        if(randomNumber <= 0)
+        {
+            randomNumber = rand() % (height-2);
+        }
+        else{
+            break;
+        }
+    }
+    ref_startPoint.x = 1;
+    ref_startPoint.y = randomNumber;
+    int index = (randomNumber * width) + 1;
+
+
+    if(Wall[index] != 'w'){
+        Wall[index] = 'P';
+        isPlaced = true;
+//        break;
+    }
+    else if(isPlaced == false){
+        Wall[width+1] = 'P';
+    }
+
+
+
+
+    bool isExitPlaced = false;
+
+    int randomNumbery = rand() % (height-1);
+    while (true)
+    {
+        if(randomNumbery <= 0)
+        {
+            randomNumbery = rand() % (height-2);
+        }
+        else{
+            break;
+        }
+    }
+
+    ref_exitPoint.x = width - 2;
+    ref_exitPoint.y = randomNumbery;
+
+
+    int indexy = (ref_exitPoint.y * width) + ref_exitPoint.x;
+    if(Wall[indexy] != 'w'){
+        Wall[indexy] = 'X';
+        isExitPlaced = true;
+        //break;
+
+   }
+    else if(isExitPlaced == false){
+            int filterWidth = width -1;
+        int BottomRightPosition = n-width-2;
+        Wall[BottomRightPosition] = 'X';
+    }
+
+    return Wall ;
+
 }
+
